@@ -8,27 +8,41 @@ import { Position } from '../models/position.models';
 })
 export class DataLocalService {
 
-  historial: Position[] = [];
+  private historial: Position[] = [];
 
   constructor(private nativeStorage:NativeStorage, private nav: NavController) { 
-    this.cargarDatos();
+    this.getPositions();
   }
 
-  async cargarDatos(){
+  async getPositions(){
     this.historial = await this.nativeStorage.getItem("historial") || [];
   }
 
-  guardarRegistro( lat: number, lon: number ){
-    // this.nav.navigateForward("/historial");
+  savePosition( lat: number, lon: number ){
     const nueva_position = new Position(lat,lon);
     this.historial.unshift(nueva_position);
-    console.log(this.historial);
     this.nativeStorage.setItem("historial",this.historial);
     this.nav.navigateForward("/historial");
-    // this.abrirRecurso(nuevo_registro);
   }
 
-  get Historial(){
+  saveCredentials(user: string, pwd: string){
+    localStorage.setItem('user',user);
+    localStorage.setItem('pwd',pwd);
+  }
+
+  validateCredentials(_user: string, _pwd:string){
+    const user = localStorage.getItem("user") || 'admin';
+    const pwd = localStorage.getItem("pwd") || 'admin1234';
+    if (user == _user && pwd == _pwd){
+      console.log('Credenciales Correctas');
+    }
+    else{
+      console.log('Credenciales Incorrectas');
+      
+    }
+  }
+
+  get Positions(){
     return [...this.historial];
   }
 }

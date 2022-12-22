@@ -12,6 +12,8 @@ export class HomePage {
 
   lat!: number;
   lon!: number;
+  user!: string;
+  pwd!: string;
 
   constructor( public geo: Geolocation, private alertCon: AlertController, private data: DataLocalService) {}
 
@@ -33,14 +35,26 @@ export class HomePage {
       message: 'Latitud: ' + this.lat + ' Longitud: ' + this.lon,
       buttons:[
         {
-          text: 'OK',
+          text: 'CANCELAR'
+        },
+        {
+          text: 'GUARDAR',
           handler: () => {
-            console.log('Guardar posicion en el historial');
-            this.data.guardarRegistro(this.lat,this.lon);
+            this.data.savePosition(this.lat,this.lon);
           },
         }
       ]
     })
     await alert.present();
+  }
+
+  validate(){
+    console.log(this.user);
+    console.log(this.pwd);
+    this.data.validateCredentials(this.user,this.pwd);
+  }
+
+  saveCredentials(){
+    this.data.saveCredentials(this.user,this.pwd);
   }
 }

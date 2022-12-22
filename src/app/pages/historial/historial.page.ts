@@ -8,20 +8,16 @@ import { Position } from '../../models/position.models';
   styleUrls: ['./historial.page.scss'],
 })
 export class HistorialPage implements OnInit {
+  historial!: Position[];
 
-  histo: Position[] = [];
-
-  constructor( public data: DataLocalService) {
+  constructor( public dataLocal: DataLocalService) {
   }
 
   ngOnInit() {
   }
 
   ionViewWillEnter(){
-    this.histo = this.data.historial;
-    console.log(this.histo);
-    
-  }
-  
+    this.historial = this.dataLocal.Positions || [];
+  }  
 
 }
